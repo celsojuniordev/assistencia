@@ -1,6 +1,7 @@
 package com.java.assistencia.service.user;
 
 import com.java.assistencia.domain.user.User;
+import com.java.assistencia.exception.NotFoundException;
 import com.java.assistencia.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> result = userRepository.findById(id);
-        return result.orElseThrow(()-> new RuntimeException("Usuário não encontrado com o id: " + id));
+        return result.orElseThrow(()-> new NotFoundException("Usuário não encontrado com o id: " + id));
     }
 
     public User login(String username, String password) {

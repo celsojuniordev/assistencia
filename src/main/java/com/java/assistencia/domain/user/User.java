@@ -1,6 +1,8 @@
 package com.java.assistencia.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.enums.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,10 +39,11 @@ public class User implements Serializable {
 
     @Column(name = "active", nullable = false)
     private boolean active;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "subscription_id", nullable = false)
-//    private Subscription subscription;
+
+    @ManyToOne
+    @JoinColumn(name = "subscription_id", nullable = false)
+    @JsonIgnoreProperties("users")
+    private Subscription subscription;
 //
 //    @Getter(onMethod = @__({@JsonIgnore}))
 //    @OneToMany(mappedBy = "responsible")
