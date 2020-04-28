@@ -22,4 +22,8 @@ public class SubscriptionService {
         Optional<Subscription> result = subscriptionRepository.findById(id);
         return result.orElseThrow(()-> new NotFoundException("Empresa não encontrada com o id: " + id));
     }
+
+    public Subscription update(Subscription subscription) {
+        return subscriptionRepository.save(subscription);
+    }
 }

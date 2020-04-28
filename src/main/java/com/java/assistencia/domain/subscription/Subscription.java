@@ -28,17 +28,17 @@ public class Subscription implements Serializable {
 
     @Getter(onMethod = @__({@JsonIgnore}))
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "subscription_id")
+    @JoinColumn(name = "subscription_id", updatable = false)
     private List<User> users;
 
-    @Column(name = "qt_users", nullable = false)
+    @Column(name = "qt_users", nullable = false, updatable = false)
     private Integer qtUsers;
 
     @Column(name = "active")
     private boolean active;
 
     @Getter(onMethod = @__({@JsonIgnore}))
-    @Column(name = "date_created")
+    @Column(name = "date_created", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
 
