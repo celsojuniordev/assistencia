@@ -1,8 +1,6 @@
 package com.java.assistencia.controller.command.user;
 
-import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
-import com.java.assistencia.enums.user.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Getter @Setter
-public class UserSaveCommand {
+public class UserUpdateCommand {
 
     @NotBlank(message = "Nome é obrigatório")
     private String name;
@@ -24,17 +22,17 @@ public class UserSaveCommand {
     @Size(min = 5, max = 20, message = "Senha deve possuir entre 5 a 20 caracteres")
     private String password;
 
-    @NotNull(message = "Tipo de usuário é obrigatório")
-    private Role role;
-
-    @NotNull
-    private Subscription subscription;
-    private boolean active = true;
-    private Date dateCreated = new Date();
-    private Date lastUpdated = new Date();
+    @NotNull(message = "Ativo é obrigatório")
+    private Boolean active;
 
     public User transformToUser() {
-        return new User(null, this.name, this.username, this.password, this.role, this.active, this.subscription, this.dateCreated, this.lastUpdated);
+        User user = new User();
+        user.setName(this.name);
+        user.setUsername(this.username);
+        user.setPassword(this.password);
+        user.setActive(this.active);
+        user.setLastUpdated(new Date());
+        return user;
     }
 
 }

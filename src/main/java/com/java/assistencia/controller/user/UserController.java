@@ -2,6 +2,7 @@ package com.java.assistencia.controller.user;
 
 import com.java.assistencia.controller.command.user.UserLoginCommand;
 import com.java.assistencia.controller.command.user.UserSaveCommand;
+import com.java.assistencia.controller.command.user.UserUpdateCommand;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
 import com.java.assistencia.service.subscription.SubscriptionService;
@@ -39,6 +40,14 @@ public class UserController {
     @PostMapping("/user/login")
     public ResponseEntity<User> login(@RequestBody @Valid UserLoginCommand userLoginCommand) {
         User result = userService.login(userLoginCommand.getUsername(), userLoginCommand.getPassword());
+        return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody @Valid UserUpdateCommand userUpdateCommand) {
+        User user = userUpdateCommand.transformToUser();
+        user.setId(id);
+        User result = userService.update(user);
         return ResponseEntity.ok(result);
     }
 }

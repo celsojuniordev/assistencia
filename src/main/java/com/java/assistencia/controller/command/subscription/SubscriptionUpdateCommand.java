@@ -16,7 +16,7 @@ public class SubscriptionUpdateCommand {
     private String name;
 
     @NotNull(message = "Ativo é obrigatório")
-    private boolean active;
+    private Boolean active;
 
     public Subscription transformToSubscription() {
 

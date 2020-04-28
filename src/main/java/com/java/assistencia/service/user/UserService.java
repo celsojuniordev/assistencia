@@ -31,4 +31,10 @@ public class UserService {
         Optional<User> result = userRepository.login(username, password);
         return result.get();
     }
+
+    public User update(User user) {
+        String password = HashUtil.getSecureHash(user.getPassword());
+        user.setPassword(password);
+        return userRepository.save(user);
+    }
 }

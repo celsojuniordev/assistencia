@@ -34,7 +34,7 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "role", nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -42,7 +42,7 @@ public class User implements Serializable {
     private boolean active;
 
     @ManyToOne
-    @JoinColumn(name = "subscription_id", nullable = false)
+    @JoinColumn(name = "subscription_id", nullable = false, updatable = false)
     @JsonIgnoreProperties("users")
     private Subscription subscription;
 //
@@ -51,7 +51,7 @@ public class User implements Serializable {
 //    private List<Customer> customers;
 
     @Getter(onMethod = @__({@JsonIgnore}))
-    @Column(name = "date_created")
+    @Column(name = "date_created", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
 
