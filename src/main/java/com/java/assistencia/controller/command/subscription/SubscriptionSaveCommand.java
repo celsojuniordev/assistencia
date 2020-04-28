@@ -3,6 +3,7 @@ package com.java.assistencia.controller.command.subscription;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
 import com.java.assistencia.enums.user.Role;
+import com.java.assistencia.utils.HashUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +38,7 @@ public class SubscriptionSaveCommand {
         //Dados do usuário responsável pela subscription
         User user = new User();
         user.setName(this.nameUser);
-        user.setPassword(this.password);
+        user.setPassword(HashUtil.getSecureHash(this.password));
         user.setDateCreated(new Date());
         user.setLastUpdated(new Date());
         user.setRole(this.role);
