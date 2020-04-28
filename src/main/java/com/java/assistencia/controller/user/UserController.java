@@ -2,7 +2,9 @@ package com.java.assistencia.controller.user;
 
 import com.java.assistencia.controller.command.user.UserLoginCommand;
 import com.java.assistencia.controller.command.user.UserSaveCommand;
+import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
+import com.java.assistencia.service.subscription.SubscriptionService;
 import com.java.assistencia.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     @PostMapping("/user")
     public ResponseEntity<User> save(@RequestBody @Valid UserSaveCommand userSaveCommand) {

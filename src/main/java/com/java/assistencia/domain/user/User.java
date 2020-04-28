@@ -30,6 +30,7 @@ public class User implements Serializable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @Getter(onMethod = @__({@JsonIgnore}))
     @Column(name = "password", nullable = false)
     private String password;
 
