@@ -44,7 +44,7 @@ public class User implements Serializable {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "subscription_id", nullable = false, updatable = false)
     @JsonIgnoreProperties("users")
     private Subscription subscription;

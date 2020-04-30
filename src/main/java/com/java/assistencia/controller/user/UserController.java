@@ -22,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<User> save(@RequestBody @Valid UserSaveCommand userSaveCommand) {
+    public ResponseEntity<User> save(@Valid @RequestBody UserSaveCommand userSaveCommand) {
         User user = userSaveCommand.transformToUser();
         User result = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
