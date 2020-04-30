@@ -21,9 +21,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private SubscriptionService subscriptionService;
-
     @PostMapping("/user")
     public ResponseEntity<User> save(@RequestBody @Valid UserSaveCommand userSaveCommand) {
         User user = userSaveCommand.transformToUser();

@@ -2,6 +2,7 @@ package com.java.assistencia.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.java.assistencia.domain.phone.Phone;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.enums.user.Role;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter @Setter
 @Entity
@@ -41,14 +44,15 @@ public class User implements Serializable {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subscription_id", nullable = false, updatable = false)
     @JsonIgnoreProperties("users")
     private Subscription subscription;
-//
-//    @Getter(onMethod = @__({@JsonIgnore}))
-//    @OneToMany(mappedBy = "responsible")
-//    private List<Customer> customers;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties("user")
+    private List<Phone> phones = new ArrayList<>();
 
     @Getter(onMethod = @__({@JsonIgnore}))
     @Column(name = "date_created", updatable = false)

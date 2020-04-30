@@ -1,8 +1,9 @@
-package com.java.assistencia.domain.subscription;
+package com.java.assistencia.domain.phone;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.java.assistencia.domain.user.User;
+import com.java.assistencia.enums.phone.PhoneType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,38 +11,33 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-@Entity
 @Getter @Setter
-@AllArgsConstructor
+@Entity
 @NoArgsConstructor
-@Table(name = "subscription")
-public class Subscription implements Serializable {
+@AllArgsConstructor
+@Table(name = "phone")
+public class Phone implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "number")
+    private String number;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private PhoneType type;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @JsonIgnoreProperties("phones")
+    private User user;
 
     @Getter(onMethod = @__({@JsonIgnore}))
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "subscription_id")
-    @JsonIgnoreProperties("subscription")
-    private List<User> users = new ArrayList<>();
-
-    @Column(name = "qt_users", nullable = false, updatable = false)
-    private Integer qtUsers;
-
-    @Column(name = "active")
-    private boolean active;
-
-    @Getter(onMethod = @__({@JsonIgnore}))
-    @Column(name = "date_created", updatable = false)
+    @Column(name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
 
@@ -50,4 +46,8 @@ public class Subscription implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 
+    @Getter(onMethod = @__({@JsonIgnore}))
+    @Column(name = "date_deleted")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateDeleted;
 }

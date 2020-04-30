@@ -34,7 +34,7 @@ public class UserSaveCommand {
     private Date lastUpdated = new Date();
 
     public User transformToUser() {
-        return new User(null, this.name, this.username, this.password, this.role, this.active, this.subscription, this.dateCreated, this.lastUpdated);
+        return new User(null, this.name, this.username, this.password, this.role, this.active, this.subscription, null, this.dateCreated, this.lastUpdated);
     }
 
 }

@@ -23,7 +23,6 @@ public class Emails implements Serializable {
     private Long id;
 
     @Column(name = "email", nullable = false)
-    @Email
     private String email;
 
     @Column(name = "email_type")
@@ -45,8 +44,4 @@ public class Emails implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateDeleted;
 
-    public Emails() {
-        this.dateCreated = new Date();
-        this.lastUpdated = new Date();
-    }
 }

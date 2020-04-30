@@ -1,10 +1,14 @@
 package com.java.assistencia.controller.command.subscription;
 
+import com.java.assistencia.domain.phone.Phone;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
+import com.java.assistencia.enums.phone.PhoneType;
 import com.java.assistencia.enums.user.Role;
 import com.java.assistencia.utils.HashUtil;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -15,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SubscriptionSaveCommand {
 
     @NotBlank(message = "Nome da empresa é obrigatório.")
@@ -31,9 +37,23 @@ public class SubscriptionSaveCommand {
 
     @NotNull(message = "Tipo de usuário é obrigatório.")
     private Role role;
+
+    @NotBlank(message = "Telefone é obrigatório")
+    private String number;
+
+    @NotNull(message = "Tipo do telefone é obrigatório.")
+    private PhoneType phoneType;
+
     private Integer qtUsers;
 
     public Subscription transformToSubscription() {
+
+        //Dados do telefone do usuário
+        Phone phone = new Phone();
+        phone.setNumber(this.number);
+        phone.setType(this.phoneType);
+        phone.setDateCreated(new Date());
+        phone.setLastUpdated(new Date());
 
         //Dados do usuário responsável pela subscription
         User user = new User();
@@ -44,6 +64,7 @@ public class SubscriptionSaveCommand {
         user.setRole(this.role);
         user.setUsername(this.username);
         user.setActive(true);
+        user.getPhones().add(phone);
 
         //Dados da subscription
         Subscription subscription = new Subscription();
@@ -52,7 +73,6 @@ public class SubscriptionSaveCommand {
         subscription.setActive(true);
         subscription.setLastUpdated(new Date());
         subscription.setDateCreated(new Date());
-        subscription.setUsers(new ArrayList<>());
         subscription.getUsers().add(user);
         return subscription;
     }
