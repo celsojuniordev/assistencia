@@ -1,7 +1,10 @@
 package com.java.assistencia.service.user;
 
+import com.java.assistencia.controller.command.user.UserCommand;
+import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
 import com.java.assistencia.exception.NotFoundException;
+import com.java.assistencia.repository.subscription.SubscriptionRepository;
 import com.java.assistencia.repository.user.UserRepository;
 import com.java.assistencia.utils.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User save(User user) {
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
+    public User save(UserCommand userCommand) {
+        User user = new User();
+        user = userCommand.bindData(user);
         String hash = HashUtil.getSecureHash(user.getPassword());
         user.setPassword(hash);
         return userRepository.save(user);
@@ -32,9 +40,21 @@ public class UserService {
         return result.get();
     }
 
-    public User update(User user) {
-        String password = HashUtil.getSecureHash(user.getPassword());
-        user.setPassword(password);
+    public User update(Long id, UserCommand userCommand) {
+        Optional<User> result = userRepository.findById(id);
+        result.orElseThrow(()-> new NotFoundException("Usuário não encontrado com o id: " + id));
+
+        Optional<Subscription> subscription = subscriptionRepository.findById(userCommand.getSubscription().getId());
+
+        if (!subscription.isPresent()) {
+            throw new NotFoundException("Empresa não existe com o id: " + userCommand.getSubscription().getId());
+        }
+        if (!result.get().getSubscription().getId().equals(subscription.get().getId())) {
+            throw new NotFoundException("Empresa não encontrada com o id: " + subscription.get().getId() + " para este usuário.");
+        }
+
+        User user = userCommand.bindData(result.get());
+        user.setSubscription(subscription.get());
         return userRepository.save(user);
     }
 }

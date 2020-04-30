@@ -34,7 +34,7 @@ public class User implements Serializable {
     private String username;
 
     @Getter(onMethod = @__({@JsonIgnore}))
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, updatable = false)
     private String password;
 
     @Column(name = "role", nullable = false, updatable = false)
@@ -44,6 +44,7 @@ public class User implements Serializable {
     @Column(name = "active", nullable = false)
     private boolean active;
 
+    @Getter(onMethod = @__({@JsonIgnore}))
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "subscription_id", nullable = false, updatable = false)
     @JsonIgnoreProperties("users")

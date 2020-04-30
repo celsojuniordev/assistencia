@@ -15,11 +15,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserSaveCommand {
+@Getter
+@Setter
+public class UserCommand {
 
     @NotBlank(message = "Nome é obrigatório")
     private String name;
@@ -33,39 +33,30 @@ public class UserSaveCommand {
     @NotNull(message = "Tipo de usuário é obrigatório")
     private Role role;
 
-    @NotBlank(message = "Telefone é obrigatório")
-    private String number;
+    private List<Phone> phones;
 
-    @NotNull(message = "Tipo do telefone é obrigatório.")
-    private PhoneType phoneType;
-
-    @NotNull
+    @NotNull(message = "Empresa é obrigatório.")
     private Subscription subscription;
 
-    private boolean active = true;
-    private Date dateCreated = new Date();
+    private boolean active;
     private Date lastUpdated = new Date();
 
-    public User transformToUser() {
+    public User bindData(User user) {
 
-        Phone phone = new Phone();
-        phone.setNumber(this.number);
-        phone.setType(this.phoneType);
-        phone.setDateCreated(new Date());
-        phone.setLastUpdated(new Date());
-
-        User user = new User();
         user.setName(this.name);
         user.setUsername(this.username);
         user.setPassword(this.password);
         user.setRole(this.role);
-        user.setActive(true);
+        user.setActive(this.active);
+        user.setPhones(phones);
         user.setSubscription(this.subscription);
-        user.getPhones().add(phone);
-        user.setDateCreated(new Date());
+
         user.setLastUpdated(new Date());
+
+        if (user.getDateCreated() == null) {
+            user.setDateCreated(new Date());
+        }
 
         return user;
     }
-
 }

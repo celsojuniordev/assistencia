@@ -1,11 +1,8 @@
 package com.java.assistencia.controller.user;
 
+import com.java.assistencia.controller.command.user.UserCommand;
 import com.java.assistencia.controller.command.user.UserLoginCommand;
-import com.java.assistencia.controller.command.user.UserSaveCommand;
-import com.java.assistencia.controller.command.user.UserUpdateCommand;
-import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
-import com.java.assistencia.service.subscription.SubscriptionService;
 import com.java.assistencia.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +19,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<User> save(@Valid @RequestBody UserSaveCommand userSaveCommand) {
-        User user = userSaveCommand.transformToUser();
-        User result = userService.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    public ResponseEntity<User> save(@Valid @RequestBody UserCommand userCommand) {
+        User user = userService.save(userCommand);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @GetMapping("/user/{id}")
@@ -41,10 +37,8 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody @Valid UserUpdateCommand userUpdateCommand) {
-        User user = userUpdateCommand.transformToUser();
-        user.setId(id);
-        User result = userService.update(user);
+    public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody @Valid UserCommand userCommand) {
+        User result = userService.update(id, userCommand);
         return ResponseEntity.ok(result);
     }
 }
