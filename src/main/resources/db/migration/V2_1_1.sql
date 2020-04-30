@@ -1,28 +1,14 @@
-CREATE TABLE IF NOT EXISTS `subscription` (
+CREATE TABLE IF NOT EXISTS `phone` (
 
 `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-`name` varchar(100) NOT NULL,
-`active` bit NOT NULL,
-`qt_users` int,
-`date_created` DATETIME,
-`last_updated` DATETIME
-
-
-)ENGINE=InnoDB DEFAULT CHARSET=UTF8;
-
-CREATE TABLE IF NOT EXISTS `user` (
-
-`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-`name` varchar(100) NOT NULL,
-`username` varchar(100) NOT NULL UNIQUE,
-`password` varchar(100) NOT NULL,
-`role` varchar(100) NOT NULL,
-`active` bit NOT NULL,
+`number` varchar(100) NOT NULL,
+`type` varchar(100) NOT NULL,
 `date_created` DATETIME,
 `last_updated` DATETIME,
-`subscription_id` int,
+`date_deleted` DATETIME,
+`user_id` int,
 
-CONSTRAINT FK_SubscriptionUser FOREIGN KEY (subscription_id)
-    REFERENCES subscription(id)
+CONSTRAINT FK_UserPhone FOREIGN KEY (user_id)
+    REFERENCES user(id)
 
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
