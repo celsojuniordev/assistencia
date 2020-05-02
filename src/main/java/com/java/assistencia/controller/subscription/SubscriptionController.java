@@ -1,5 +1,6 @@
 package com.java.assistencia.controller.subscription;
 
+import com.java.assistencia.controller.command.subscription.SubscriptionCommand;
 import com.java.assistencia.controller.command.subscription.SubscriptionSaveCommand;
 import com.java.assistencia.controller.command.subscription.SubscriptionUpdateCommand;
 import com.java.assistencia.domain.subscription.Subscription;
@@ -19,10 +20,9 @@ public class SubscriptionController {
     private SubscriptionService service;
 
     @PostMapping("/subscription")
-    public ResponseEntity<Subscription> save(@Valid @RequestBody SubscriptionSaveCommand subscriptionSaveCommand) {
-        Subscription subscription = subscriptionSaveCommand.transformToSubscription();
-        Subscription result = service.save(subscription);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    public ResponseEntity<Subscription> save(@Valid @RequestBody SubscriptionCommand subscriptionCommand) {
+        Subscription subscription = service.save(subscriptionCommand);
+        return ResponseEntity.status(HttpStatus.CREATED).body(subscription);
     }
 
     @GetMapping("/subscription/{id}")

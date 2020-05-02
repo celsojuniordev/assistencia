@@ -24,8 +24,6 @@ public class UserService {
     public User save(UserCommand userCommand) {
         User user = new User();
         user = userCommand.bindData(user);
-        String hash = HashUtil.getSecureHash(user.getPassword());
-        user.setPassword(hash);
         return userRepository.save(user);
     }
 

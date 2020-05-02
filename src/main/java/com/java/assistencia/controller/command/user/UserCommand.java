@@ -5,6 +5,7 @@ import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
 import com.java.assistencia.enums.phone.PhoneType;
 import com.java.assistencia.enums.user.Role;
+import com.java.assistencia.utils.HashUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,22 +36,28 @@ public class UserCommand {
 
     private List<Phone> phones;
 
-    @NotNull(message = "Empresa é obrigatório.")
+    @NotNull(message = "Assinatura é obrigatório.")
     private Subscription subscription;
 
     private boolean active;
-    private Date lastUpdated = new Date();
 
     public User bindData(User user) {
 
         user.setName(this.name);
         user.setUsername(this.username);
-        user.setPassword(this.password);
+        user.setPassword(HashUtil.getSecureHash(this.password));
         user.setRole(this.role);
         user.setActive(this.active);
-        user.setPhones(phones);
-        user.setSubscription(this.subscription);
 
+        this.phones.forEach( phone -> {
+            phone.setLastUpdated(new Date());
+            if (phone.getDateCreated() == null) {
+                phone.setDateCreated(new Date());
+            }
+        });
+
+        user.setPhones(this.phones);
+        user.setSubscription(this.subscription);
         user.setLastUpdated(new Date());
 
         if (user.getDateCreated() == null) {

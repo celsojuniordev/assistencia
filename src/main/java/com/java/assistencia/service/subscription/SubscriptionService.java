@@ -1,5 +1,6 @@
 package com.java.assistencia.service.subscription;
 
+import com.java.assistencia.controller.command.subscription.SubscriptionCommand;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.exception.NotFoundException;
 import com.java.assistencia.repository.subscription.SubscriptionRepository;
@@ -14,7 +15,8 @@ public class SubscriptionService {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
-    public Subscription save(Subscription subscription) {
+    public Subscription save(SubscriptionCommand subscriptionCommand) {
+        Subscription subscription = subscriptionCommand.bindData(new Subscription());
         return subscriptionRepository.save(subscription);
     }
 
