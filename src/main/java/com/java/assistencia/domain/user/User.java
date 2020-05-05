@@ -3,12 +3,12 @@ package com.java.assistencia.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.java.assistencia.domain.address.Address;
 import com.java.assistencia.domain.phone.Phone;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.enums.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -20,7 +20,6 @@ import java.util.List;
 @Getter @Setter
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "user")
 public class User implements Serializable {
 
@@ -47,8 +46,9 @@ public class User implements Serializable {
     private boolean active;
 
     @Getter(onMethod = @__({@JsonIgnore}))
+    @Setter(onMethod = @__({@JsonProperty}))
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "subscription_id", updatable = false)
+    @JoinColumn(name = "subscription_id")
     @JsonIgnoreProperties("users")
     private Subscription subscription;
 
@@ -56,6 +56,11 @@ public class User implements Serializable {
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties("user")
     private List<Phone> phones = new ArrayList<>();
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "address_id")
+//    @JsonIgnoreProperties("user")
+//    private List<Address> addresses = new ArrayList<>();
 
     @Getter(onMethod = @__({@JsonIgnore}))
     @Column(name = "date_created", updatable = false)

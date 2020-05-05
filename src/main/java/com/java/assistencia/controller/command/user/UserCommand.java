@@ -36,7 +36,6 @@ public class UserCommand {
 
     private List<Phone> phones = new ArrayList<>();
 
-    @NotNull(message = "Assinatura é obrigatório.")
     private Subscription subscription;
 
     private boolean active;
@@ -49,21 +48,11 @@ public class UserCommand {
         user.setRole(this.role);
         user.setActive(this.active);
 
-        this.phones.forEach( phone -> {
-            phone.setLastUpdated(new Date());
-            if (phone.getDateCreated() == null) {
-                phone.setDateCreated(new Date());
-            }
-        });
-
+        setSubscription(this.phones, user.getSubscription());
         setDeleted(this.phones, user.getPhones());
-        user.setPhones(this.phones);
-        user.setSubscription(this.subscription);
-        user.setLastUpdated(new Date());
 
-        if (user.getDateCreated() == null) {
-            user.setDateCreated(new Date());
-        }
+        user.setPhones(this.phones);
+        user.setLastUpdated(new Date());
 
         return user;
     }
@@ -72,6 +61,14 @@ public class UserCommand {
         userPhones.forEach(phone -> {
             if (!phones.contains(phone)) {
                 phone.setDateDeleted(new Date());
+            }
+        });
+    }
+
+    private void setSubscription(List<Phone> phones, Subscription subscription) {
+        phones.forEach( phone -> {
+            if (isNull(phone.getId())) {
+                phone.setSubscription(subscription);
             }
         });
     }

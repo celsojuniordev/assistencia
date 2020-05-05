@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class UserService {
 
@@ -25,6 +27,19 @@ public class UserService {
     public User save(UserCommand userCommand) {
         User user = new User();
         user = userCommand.bindData(user);
+
+        if (isNull(userCommand.getSubscription().getId())) {
+            throw new NotFoundException("Empresa não existe com o id: " + userCommand.getSubscription().getId());
+        }
+        Optional<Subscription> subscription = subscriptionRepository.findById(userCommand.getSubscription().getId());
+        if (!subscription.isPresent()) {
+            throw new NotFoundException("Empresa não existe com o id: " + userCommand.getSubscription().getId());
+        }
+        user.setSubscription(subscription.get());
+//        if (!user.getSubscription().getId().equals(subscription.get().getId())) {
+//            throw new NotFoundException("Empresa não encontrada com o id: " + subscription.get().getId() + " para este usuário.");
+//        }
+
         return userRepository.save(user);
     }
 
@@ -43,17 +58,7 @@ public class UserService {
         Optional<User> result = userRepository.findById(id);
         result.orElseThrow(()-> new NotFoundException("Usuário não encontrado com o id: " + id));
 
-        Optional<Subscription> subscription = subscriptionRepository.findById(userCommand.getSubscription().getId());
-
-        if (!subscription.isPresent()) {
-            throw new NotFoundException("Empresa não existe com o id: " + userCommand.getSubscription().getId());
-        }
-        if (!result.get().getSubscription().getId().equals(subscription.get().getId())) {
-            throw new NotFoundException("Empresa não encontrada com o id: " + subscription.get().getId() + " para este usuário.");
-        }
-
         User user = userCommand.bindData(result.get());
-        user.setSubscription(subscription.get());
         return userRepository.save(user);
     }
 

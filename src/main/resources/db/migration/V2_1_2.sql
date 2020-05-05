@@ -1,0 +1,1 @@
+ALTER TABLE `phone` ADD `subscription_id` int ;
