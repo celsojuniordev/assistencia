@@ -50,4 +50,9 @@ public class Phone implements Serializable {
     @Column(name = "date_deleted")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateDeleted;
+
+    public Phone() {
+        this.dateCreated = new Date();
+        this.lastUpdated = new Date();
+    }
 }

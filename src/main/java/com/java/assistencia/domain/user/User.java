@@ -67,4 +67,9 @@ public class User implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 
+    public User() {
+        this.dateCreated = new Date();
+        this.lastUpdated = new Date();
+    }
+
 }

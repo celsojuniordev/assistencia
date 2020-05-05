@@ -50,4 +50,9 @@ public class Subscription implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated;
 
+    public Subscription() {
+        this.dateCreated = new Date();
+        this.lastUpdated = new Date();
+    }
+
 }
