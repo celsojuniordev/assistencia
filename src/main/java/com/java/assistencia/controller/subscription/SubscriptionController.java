@@ -1,8 +1,6 @@
 package com.java.assistencia.controller.subscription;
 
 import com.java.assistencia.controller.command.subscription.SubscriptionCommand;
-import com.java.assistencia.controller.command.subscription.SubscriptionSaveCommand;
-import com.java.assistencia.controller.command.subscription.SubscriptionUpdateCommand;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.service.subscription.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +27,5 @@ public class SubscriptionController {
     public ResponseEntity<Subscription> findById(@PathVariable("id") Long id) {
         Subscription subscription = service.findById(id);
         return ResponseEntity.ok(subscription);
-    }
-
-    @PutMapping("/subscription/{id}")
-    public ResponseEntity<Subscription> update(@PathVariable("id") Long id, @RequestBody @Valid SubscriptionUpdateCommand subscriptionUpdateCommand) {
-        Subscription subscription = subscriptionUpdateCommand.transformToSubscription();
-        subscription.setId(id);
-        Subscription result = service.update(subscription);
-        return ResponseEntity.ok(result);
     }
 }

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @Getter @Setter
 public class SubscriptionCommand {
 
@@ -22,25 +24,18 @@ public class SubscriptionCommand {
     @NotNull(message = "Usuário é obrigatório.")
     private List<User> users = new ArrayList<>();
 
-    @NotNull(message = "Telefone é obrigatório")
-    private List<Phone> phones = new ArrayList<>();
-
     private Boolean active;
 
     private Integer qtUsers;
 
     public Subscription bindData(Subscription subscription) {
 
-        phones.forEach( phone -> {
-            phone.setLastUpdated(new Date());
-            phone.setDateCreated(new Date());
-        });
-
         users.forEach( user -> {
-            user.setPassword(HashUtil.getSecureHash(user.getPassword()));
-            user.setPhones(phones);
-            user.setDateCreated(new Date());
-            user.setLastUpdated(new Date());
+            if (isNull(user.getId())) {
+                user.setPassword(HashUtil.getSecureHash(user.getPassword()));
+                user.setDateCreated(new Date());
+                user.setLastUpdated(new Date());
+            }
         });
 
         subscription.setUsers(users);

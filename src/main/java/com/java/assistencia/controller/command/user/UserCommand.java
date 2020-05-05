@@ -3,20 +3,20 @@ package com.java.assistencia.controller.command.user;
 import com.java.assistencia.domain.phone.Phone;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
-import com.java.assistencia.enums.phone.PhoneType;
 import com.java.assistencia.enums.user.Role;
 import com.java.assistencia.utils.HashUtil;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @Getter
 @Setter
@@ -34,7 +34,7 @@ public class UserCommand {
     @NotNull(message = "Tipo de usuário é obrigatório")
     private Role role;
 
-    private List<Phone> phones;
+    private List<Phone> phones = new ArrayList<>();
 
     @NotNull(message = "Assinatura é obrigatório.")
     private Subscription subscription;
@@ -45,7 +45,7 @@ public class UserCommand {
 
         user.setName(this.name);
         user.setUsername(this.username);
-        user.setPassword(HashUtil.getSecureHash(this.password));
+        user.setPassword(user.getPassword() == null ? HashUtil.getSecureHash(this.password) : user.getPassword());
         user.setRole(this.role);
         user.setActive(this.active);
 
@@ -56,6 +56,7 @@ public class UserCommand {
             }
         });
 
+        setDeleted(this.phones, user.getPhones());
         user.setPhones(this.phones);
         user.setSubscription(this.subscription);
         user.setLastUpdated(new Date());
@@ -65,5 +66,13 @@ public class UserCommand {
         }
 
         return user;
+    }
+
+    private void setDeleted(List<Phone> phones, List<Phone> userPhones) {
+        userPhones.forEach(phone -> {
+            if (!phones.contains(phone)) {
+                phone.setDateDeleted(new Date());
+            }
+        });
     }
 }
