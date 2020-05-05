@@ -30,7 +30,7 @@ public class SubscriptionCommand {
 
     public Subscription bindData(Subscription subscription) {
 
-        users.forEach( user -> {
+        this.users.forEach( user -> {
             if (isNull(user.getId())) {
                 user.setPassword(HashUtil.getSecureHash(user.getPassword()));
                 user.setDateCreated(new Date());
@@ -38,11 +38,14 @@ public class SubscriptionCommand {
             }
         });
 
-        subscription.setUsers(users);
+        subscription.setUsers(this.users);
+        this.users.forEach( user -> {
+            if (!user.getPhones().isEmpty()) {
+                subscription.setPhones(user.getPhones());
+            }
+        });
         subscription.setName(this.name);
         subscription.setActive(this.active);
-        subscription.setLastUpdated(new Date());
-        subscription.setDateCreated(new Date());
         subscription.setQtUsers(1);
         return subscription;
     }
