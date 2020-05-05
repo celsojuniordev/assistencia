@@ -2,6 +2,7 @@ package com.java.assistencia.controller.user;
 
 import com.java.assistencia.controller.command.user.UserCommand;
 import com.java.assistencia.controller.command.user.UserLoginCommand;
+import com.java.assistencia.controller.command.user.UserPasswordCommand;
 import com.java.assistencia.domain.user.User;
 import com.java.assistencia.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,11 @@ public class UserController {
     public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody @Valid UserCommand userCommand) {
         User result = userService.update(id, userCommand);
         return ResponseEntity.ok(result);
+    }
+
+    @PatchMapping("/user/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable("id") Long id, @RequestBody @Valid UserPasswordCommand userPasswordCommand) {
+        userService.updatePassword(id, userPasswordCommand);
+        return ResponseEntity.ok().build();
     }
 }

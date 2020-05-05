@@ -2,6 +2,7 @@ package com.java.assistencia.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.java.assistencia.domain.phone.Phone;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.enums.user.Role;
@@ -33,7 +34,9 @@ public class User implements Serializable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false, updatable = false)
+    @Getter(onMethod = @__({@JsonIgnore}))
+    @Setter(onMethod = @__({@JsonProperty}))
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "role", nullable = false, updatable = false)

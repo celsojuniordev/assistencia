@@ -1,6 +1,7 @@
 package com.java.assistencia.service.user;
 
 import com.java.assistencia.controller.command.user.UserCommand;
+import com.java.assistencia.controller.command.user.UserPasswordCommand;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.domain.user.User;
 import com.java.assistencia.exception.NotFoundException;
@@ -54,5 +55,10 @@ public class UserService {
         User user = userCommand.bindData(result.get());
         user.setSubscription(subscription.get());
         return userRepository.save(user);
+    }
+
+    public int updatePassword(Long id, UserPasswordCommand userPasswordCommand) {
+        String password = HashUtil.getSecureHash(userPasswordCommand.getPassword());
+        return userRepository.updatePassword(id, password);
     }
 }
