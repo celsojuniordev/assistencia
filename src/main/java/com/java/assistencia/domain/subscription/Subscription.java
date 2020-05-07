@@ -33,6 +33,12 @@ public class Subscription implements Serializable {
     @JsonIgnoreProperties("subscription")
     private List<User> users = new ArrayList<>();
 
+    @Getter(onMethod = @__({@JsonIgnore}))
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subscription_id")
+    @JsonIgnoreProperties("subscription")
+    private List<User> addresses = new ArrayList<>();
+
     @Column(name = "qt_users", nullable = false, updatable = false)
     private Integer qtUsers;
 
