@@ -8,6 +8,7 @@ import com.java.assistencia.domain.phone.Phone;
 import com.java.assistencia.domain.subscription.Subscription;
 import com.java.assistencia.enums.user.Role;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @Getter @Setter
 @Entity
 @AllArgsConstructor
+@EqualsAndHashCode
 @Table(name = "user")
 public class User implements Serializable {
 
@@ -55,12 +57,12 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties("user")
-    private List<Phone> phones = new ArrayList<>();
+    private List<Phone> phones;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id")
-//    @JsonIgnoreProperties("user")
-//    private List<Address> addresses = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties("user")
+    private List<Address> addresses = new ArrayList<>();
 
     @Getter(onMethod = @__({@JsonIgnore}))
     @Column(name = "date_created", updatable = false)
@@ -76,5 +78,7 @@ public class User implements Serializable {
         this.dateCreated = new Date();
         this.lastUpdated = new Date();
     }
+
+    public List<Phone> getPhones() { return phones; }
 
 }

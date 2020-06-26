@@ -28,14 +28,14 @@ public class UserService {
         User user = new User();
         user = userCommand.bindData(user);
 
-        if (isNull(userCommand.getSubscription().getId())) {
-            throw new NotFoundException("Empresa não existe com o id: " + userCommand.getSubscription().getId());
-        }
-        Optional<Subscription> subscription = subscriptionRepository.findById(userCommand.getSubscription().getId());
-        if (!subscription.isPresent()) {
-            throw new NotFoundException("Empresa não existe com o id: " + userCommand.getSubscription().getId());
-        }
-        user.setSubscription(subscription.get());
+//        if (isNull(userCommand.getSubscription().getId())) {
+//            throw new NotFoundException("Empresa não existe com o id: " + userCommand.getSubscription().getId());
+//        }
+//        Optional<Subscription> subscription = subscriptionRepository.findById(userCommand.getSubscription().getId());
+//        if (!subscription.isPresent()) {
+//            throw new NotFoundException("Empresa não existe com o id: " + userCommand.getSubscription().getId());
+//        }
+//        user.setSubscription(subscription.get());
 //        if (!user.getSubscription().getId().equals(subscription.get().getId())) {
 //            throw new NotFoundException("Empresa não encontrada com o id: " + subscription.get().getId() + " para este usuário.");
 //        }
@@ -44,22 +44,19 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        Optional<User> result = userRepository.findById(id);
-        return result.orElseThrow(()-> new NotFoundException("Usuário não encontrado com o id: " + id));
+        return userRepository.findById(id);
     }
 
     public User login(String username, String password) {
-        password = HashUtil.getSecureHash(password);
-        Optional<User> result = userRepository.login(username, password);
-        return result.get();
+        return userRepository.login(username, password);
     }
 
     public User update(Long id, UserCommand userCommand) {
-        Optional<User> result = userRepository.findById(id);
-        result.orElseThrow(()-> new NotFoundException("Usuário não encontrado com o id: " + id));
-
-        User user = userCommand.bindData(result.get());
-        return userRepository.save(user);
+//        Optional<User> result = userRepository.findById(id);
+//        result.orElseThrow(()-> new NotFoundException("Usuário não encontrado com o id: " + id));
+//
+//        User user = userCommand.bindData(result.get());
+        return null;
     }
 
     public int updatePassword(Long id, UserPasswordCommand userPasswordCommand) {

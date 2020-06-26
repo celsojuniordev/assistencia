@@ -8,6 +8,7 @@ import com.java.assistencia.enums.phone.PhoneType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -58,6 +59,12 @@ public class Phone implements Serializable {
 
     public Phone() {
         this.dateCreated = new Date();
-        this.lastUpdated = new Date();
+    }
+
+    public Phone update(Phone phone) {
+        phone.lastUpdated = new Date();
+        BeanUtils.copyProperties(phone, this, "id");
+        return this;
+
     }
 }
